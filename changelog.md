@@ -5,3 +5,4 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Changelog! All notable changes to this project will be documented in this file.
 - Logging, any errors will be added into the log file.
+- Config files to make values more easier to change.
