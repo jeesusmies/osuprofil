@@ -15,6 +15,7 @@ This is really WIP right now, and more features will be added in the near future
 * osu! api key
 * Discord token
 * MongoDB server
+* Optional, but a Linux distro is recommended.
 
 ## Usage
 will make
