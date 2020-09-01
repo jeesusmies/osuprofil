@@ -1,3 +1,4 @@
+import os
 import json
 import discord
 import logging
@@ -5,6 +6,7 @@ import asyncio
 import requests
 import datetime
 import pickledb
+import configparser
 from owrap import Owrap
 from pymongo import MongoClient
 from discord.ext import commands
@@ -13,16 +15,20 @@ from discord.ext import commands
 
 list_of_players_in_daily = []
 
-osu_token = "token"
-TOKEN = "token"
-
+config = configparser.ConfigParser()
+config.read(os.path.abspath("config.conf"))
 owrap = Owrap()
-client = commands.Bot(command_prefix = "jimi ")
-setdb = pickledb.load('setid.db', True)
-mongoclient = MongoClient('mongodb://localhost:27017/')
+
+osu_token = config['Tokens']['osu_token']
+TOKEN = config['Tokens']['discord_token']
+prefix = config['Bot']['prefix']
+
+setdb = pickledb.load(config['Names']['set_db'], True)
+logging.basicConfig(filename=config['Names']['log_file'], level=logging.INFO, format='%(asctime)s %(message)s')
+mongoclient = MongoClient(config['Names']['mongoclient'])
+client = commands.Bot(command_prefix = prefix)
 
 client.remove_command("help")
-logging.basicConfig(filename='file.log', level=logging.INFO, format='%(asctime)s %(message)s')
 
 db = mongoclient['database']
 collection = db['collection']
@@ -105,7 +111,7 @@ async def daily_refresh(uid):
 
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Game("jimi help"))
+    await client.change_presence(activity=discord.Game(f"{prefix}help"))
     print("bot started")
     logging.info('Bot started.')
 # .format(sign2="+" if r['accuracy'] >= ll['accuracy'] else "-"
@@ -148,7 +154,7 @@ async def daily(ctx, user: str = None):
 
 @client.command(pass_context=True)
 async def help(ctx):
-    await ctx.send("`jimi profil {name}` -> best profile shower with best tracking !\n`jimi daily {name}` -> shows how much earned in a day\n`jimi set {name}` -> links assigned name with your discord id so that you can do `jimi profil` without specifing name")
+    await ctx.send(f"`{prefix}profil [name]` -> best profile shower with best tracking !\n`{prefix}daily [name]` -> shows how much earned in a day\n`{prefix}set [name]` -> links assigned name with your discord id so that you can do `{prefix}profil` without specifing name")
 
 @client.command(pass_context=True, no_pm=True)
 async def set(ctx, uname: str = None):
