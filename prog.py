@@ -154,7 +154,7 @@ async def daily(ctx, user: str = None):
 
 @client.command(pass_context=True)
 async def help(ctx):
-    await ctx.send(f"`{prefix}profil [name]` -> best profile shower with best tracking !\n`{prefix}daily [name]` -> shows how much earned in a day\n`{prefix}set [name]` -> links assigned name with your discord id so that you can do `{prefix}profil` without specifing name")
+    await ctx.send(f"`{prefix}profil [name]` -> best profile shower with best tracking !\n`{prefix}daily [name]` -> shows how much earned in a day\n`{prefix}set [name]` -> links assigned name with your discord id so that you can do `{prefix}profil` without specifing name\n\ Changelog: https://github.com/jeesusmies/osuprofil/blob/master/changelog.md\nVersion: 0.9.0")
 
 @client.command(pass_context=True, no_pm=True)
 async def set(ctx, uname: str = None):
